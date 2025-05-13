@@ -51,7 +51,10 @@ def create_text_slide(text, width=1920, height=1080, color="white"):
         font = ImageFont.truetype("arial.ttf", 80)
     except:
         font = ImageFont.load_default()
-    text_width, text_height = draw.textsize(text, font=font)
+    # Use font.getbbox to get text dimensions
+    bbox = font.getbbox(text)
+    text_width = bbox[2] - bbox[0]  # Right - Left
+    text_height = bbox[3] - bbox[1]  # Bottom - Top
     x = (width - text_width) // 2
     y = (height - text_height) // 2
     draw.text((x, y), text, fill=color, font=font)
