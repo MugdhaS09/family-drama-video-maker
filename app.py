@@ -45,7 +45,7 @@ def create_text_slide(text, width=1920, height=1080, color="white"):
     x = (width - text_width) // 2
     y = (height - text_height) // 2
     draw.text((x, y), text, fill=color, font=font)
-    img_buffer = tempfile.BytesIO()
+    img_buffer = io.BytesIO()
     img.save(img_buffer, format="PNG")
     return np.array(Image.open(img_buffer))
 
