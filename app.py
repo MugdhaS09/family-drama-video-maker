@@ -108,8 +108,8 @@ def create_text_slide(text, width=1920, height=1080, color="white"):
     img.save(img_buffer, format="PNG")
     return np.array(Image.open(img_buffer))
 
-# Function to generate voiceover using ElevenLabs
-def generate_voiceover(text, voice):
+# Function to generate voiceover using ElevenLabs (Jerry B. voice)
+def generate_voiceover(text):
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
@@ -120,7 +120,7 @@ def generate_voiceover(text, voice):
         "model_id": "eleven_multilingual_v2",
         "voice_settings": {"stability": 0.5, "similarity_boost": 0.5}
     }
-    voice_id = "EXAVITQu4vr4xnSDxMaL" if voice == "Rachel" else "pNInz6obpgDQGcFmaJgB"  # Rachel, Matthew
+    voice_id = "1t1EeRixsJrKbiF1zwM6"  # Jerry B. - Hyper-Real & Conversational
     response = requests.post(f"{ELEVENLABS_API_URL}{voice_id}", json=data, headers=headers)
     if response.status_code == 200:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
@@ -132,9 +132,11 @@ def generate_voiceover(text, voice):
 
 # Streamlit form for user input
 story_text = st.text_area("Story Text", height=300, placeholder="Paste your Reddit story script here...")
-voice = st.selectbox("Voice", ["Rachel", "Matthew"])
 text_color = st.selectbox("Text Color", ["White", "Red"])
 music_url = st.text_input("Background Music URL", placeholder="Paste a direct MP3 link (e.g., from Pixabay)")
+
+# Use Jerry B. voice (no dropdown needed)
+voice = "Jerry B. - Hyper-Real & Conversational"
 
 # Generate video when the button is clicked
 if st.button("Generate Video"):
@@ -149,7 +151,7 @@ if st.button("Generate Video"):
                 st.stop()
 
             # Generate voiceover
-            narration_file = generate_voiceover(story_text, voice)
+            narration_file = generate_voiceover(story_text)
             if not narration_file:
                 st.stop()
 
